@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private — Ippei Sakanaka</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,700&family=Noto+Serif+JP:wght@200;300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e18;--red:#1e3a6b;--lime:#7eb8ff;--white:#f0f3f8;--gray:#6a7080;--dark:#0a1426;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--white);scroll-behavior:smooth;}
+body{font-family:'Josefin Sans',sans-serif;cursor:none;overflow-x:hidden;font-weight:300;min-height:100vh;}
+
+body::after{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");mix-blend-mode:overlay;opacity:0.5;}
+body::before{content:'';position:fixed;inset:0;z-index:9989;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 3px);opacity:0.5;}
+
+.cursor{width:6px;height:6px;background:var(--lime);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width 0.2s,height 0.2s;}
+.cursor.big{width:40px;height:40px;background:rgba(126,184,255,0.5);}
+.cursor-ring{width:28px;height:28px;border:1px solid var(--lime);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0.4;transition:opacity 0.2s;}
+
+/* CINEMA FRAME */
+.fc{position:fixed;width:28px;height:28px;border:1.5px solid var(--lime);opacity:0.5;z-index:200;pointer-events:none;}
+.fc.tl{top:20px;left:20px;border-right:none;border-bottom:none;}
+.fc.tr{top:20px;right:20px;border-left:none;border-bottom:none;}
+.fc.bl{bottom:20px;left:20px;border-right:none;border-top:none;}
+.fc.br{bottom:20px;right:20px;border-left:none;border-top:none;}
+.frame-tag{position:fixed;font-size:10px;letter-spacing:0.18em;color:var(--lime);text-transform:uppercase;z-index:201;pointer-events:none;opacity:0.7;font-weight:300;}
+.frame-tag.t1{top:30px;left:60px;display:flex;align-items:center;gap:12px;}
+.frame-tag.t1::before{content:'';width:7px;height:7px;background:#cc2020;border-radius:50%;animation:blink 1.2s infinite;}
+.frame-tag.t2{top:30px;right:60px;}
+.frame-tag.b1{bottom:30px;left:60px;}
+.frame-tag.b2{bottom:30px;right:60px;}
+@keyframes blink{50%{opacity:0.3;}}
+
+/* LOGIN GATE */
+.gate{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;}
+.gate.hidden{display:none;}
+.gate-box{max-width:480px;width:100%;border:1px solid var(--lime);padding:56px 48px;position:relative;background:var(--dark);}
+.gate-box::before,.gate-box::after{content:'';position:absolute;width:22px;height:22px;border:2px solid var(--lime);}
+.gate-box::before{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+.gate-box::after{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+.gate-corner-tr,.gate-corner-bl{position:absolute;width:22px;height:22px;border:2px solid var(--lime);}
+.gate-corner-tr{top:-2px;right:-2px;border-left:none;border-bottom:none;}
+.gate-corner-bl{bottom:-2px;left:-2px;border-right:none;border-top:none;}
+.gate-status{position:absolute;top:18px;left:24px;font-size:9px;letter-spacing:0.3em;color:#cc2020;text-transform:uppercase;display:flex;align-items:center;gap:8px;font-weight:700;}
+.gate-status::before{content:'';width:7px;height:7px;background:#cc2020;border-radius:50%;animation:blink 1s infinite;}
+.gate-id{position:absolute;top:18px;right:24px;font-size:9px;letter-spacing:0.2em;color:var(--lime);}
+.gate-label{font-size:10px;letter-spacing:0.4em;color:var(--lime);text-transform:uppercase;margin-bottom:16px;font-weight:300;margin-top:16px;}
+.gate-title{font-size:28px;font-weight:700;letter-spacing:-0.01em;color:var(--white);margin-bottom:12px;text-transform:uppercase;line-height:1.1;}
+.gate-title em{font-style:italic;font-weight:200;color:rgba(240,243,248,0.55);display:block;}
+.gate-sub{font-size:12px;color:rgba(240,243,248,0.6);margin-bottom:36px;font-style:italic;line-height:1.7;}
+.gate-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(240,243,248,0.2);color:var(--white);font-family:'Josefin Sans',sans-serif;font-size:16px;font-weight:300;padding:14px 0;outline:none;letter-spacing:0.1em;cursor:none;transition:border-color 0.3s;}
+.gate-input:focus{border-bottom-color:var(--lime);}
+.gate-input::placeholder{color:rgba(240,243,248,0.3);}
+.gate-actions{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:16px;}
+.gate-btn{background:var(--lime);color:var(--bg);border:none;padding:14px 28px;font-family:'Josefin Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;cursor:none;transition:opacity 0.2s;}
+.gate-btn:hover{opacity:0.85;}
+.gate-back{background:none;border:none;color:rgba(240,243,248,0.5);font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;cursor:none;transition:color 0.2s;text-decoration:none;}
+.gate-back:hover{color:var(--white);}
+.gate-error{font-size:11px;color:#ff6464;margin-top:14px;opacity:0;transition:opacity 0.3s;letter-spacing:0.05em;}
+.gate-error.show{opacity:1;}
+
+/* CONTENT */
+.content{padding:120px 80px 80px;display:none;}
+.content.show{display:block;}
+
+.head{margin-bottom:80px;border-bottom:1px solid rgba(126,184,255,0.15);padding-bottom:32px;display:flex;justify-content:space-between;align-items:flex-end;}
+.head-l{}
+.head-meta{font-size:10px;letter-spacing:0.4em;color:var(--lime);text-transform:uppercase;margin-bottom:16px;font-weight:300;display:flex;align-items:center;gap:12px;}
+.head-meta::before{content:'';width:30px;height:1px;background:var(--lime);}
+.head-title{font-size:clamp(40px,6vw,88px);font-weight:700;letter-spacing:-0.02em;line-height:0.95;color:var(--white);text-transform:capitalize;}
+.head-title em{font-style:italic;font-weight:200;color:var(--lime);}
+.head-r{text-align:right;font-size:10px;letter-spacing:0.25em;color:rgba(240,243,248,0.55);text-transform:uppercase;line-height:2;font-weight:300;}
+.head-r .lime{color:var(--lime);}
+
+.welcome{font-family:'Noto Serif JP',serif;font-size:13px;color:rgba(240,243,248,0.7);line-height:2;margin-bottom:64px;max-width:680px;font-weight:300;}
+.welcome strong{color:var(--lime);font-style:italic;font-weight:400;}
+
+.video-list{display:flex;flex-direction:column;gap:80px;}
+.video-item{position:relative;}
+.video-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;border-bottom:1px solid rgba(126,184,255,0.12);padding-bottom:16px;}
+.video-meta-l{}
+.video-num{font-size:10px;letter-spacing:0.25em;color:var(--lime);margin-bottom:8px;font-weight:300;}
+.video-title{font-size:clamp(24px,3.5vw,48px);font-weight:700;letter-spacing:-0.01em;color:var(--white);text-transform:uppercase;line-height:1;}
+.video-title em{font-style:italic;font-weight:200;color:rgba(240,243,248,0.55);font-size:0.55em;letter-spacing:0.05em;text-transform:none;display:inline-block;margin-left:16px;vertical-align:baseline;}
+.video-meta-r{text-align:right;font-size:10px;letter-spacing:0.2em;color:rgba(240,243,248,0.5);text-transform:uppercase;line-height:1.8;font-weight:300;}
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;border:1px solid rgba(126,184,255,0.2);}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.video-wrap::before,.video-wrap::after{content:'';position:absolute;width:24px;height:24px;border:2px solid var(--lime);z-index:2;pointer-events:none;}
+.video-wrap::before{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+.video-wrap::after{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+
+.footer{margin-top:120px;padding-top:32px;border-top:1px solid rgba(126,184,255,0.15);display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:0.2em;color:rgba(240,243,248,0.55);text-transform:uppercase;font-weight:300;}
+.footer-back{color:var(--lime);text-decoration:none;cursor:none;transition:opacity 0.2s;}
+.footer-back:hover{opacity:0.7;}
+
+@media(max-width:900px){
+  .frame-tag{display:none;}
+  .content{padding:80px 24px 60px;}
+  .head{flex-direction:column;align-items:flex-start;gap:24px;}
+  .head-r{text-align:left;}
+  .video-meta{flex-direction:column;align-items:flex-start;gap:12px;}
+  .video-meta-r{text-align:left;}
+  .footer{flex-direction:column;gap:16px;align-items:flex-start;}
+  .gate-box{padding:40px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<div class="fc tl"></div><div class="fc tr"></div><div class="fc bl"></div><div class="fc br"></div>
+<div class="frame-tag t1"><span>PRIVATE ACCESS</span></div>
+<div class="frame-tag t2" id="tc">TC 00:00:00:00</div>
+<div class="frame-tag b1">CLIENT VIEW · CONFIDENTIAL</div>
+<div class="frame-tag b2">© 2026 IPPEI SAKANAKA</div>
+
+<!-- GATE -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-corner-tr"></div>
+    <div class="gate-corner-bl"></div>
+    <div class="gate-status">RESTRICTED</div>
+    <div class="gate-id">ID 000-2026</div>
+    <div class="gate-label">+ Private Access</div>
+    <h1 class="gate-title">Client View<em>Authorization Required</em></h1>
+    <p class="gate-sub">This page contains confidential works available only to authorized clients.<br>Please enter the access code to continue.</p>
+    <input type="password" class="gate-input" id="gateInput" placeholder="Enter access code..." autocomplete="off">
+    <div class="gate-error" id="gateError">Incorrect access code.</div>
+    <div class="gate-actions">
+      <a href="index.html" class="gate-back">← Back to portfolio</a>
+      <button class="gate-btn" onclick="unlock()">Enter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
+  <div class="head">
+    <div class="head-l">
+      <div class="head-meta">Private — Client Access</div>
+      <h1 class="head-title">Confidential <em>Works</em></h1>
+    </div>
+    <div class="head-r">
+      Access granted<br>
+      <span class="lime">2026 · IPPEI SAKANAKA</span>
+    </div>
+  </div>
+
+  <p class="welcome">
+    ご来訪ありがとうございます。<br>
+    こちらのページでは、<strong>非公開作品</strong>を限定公開しております。<br>
+    各動画は内部閲覧用です。共有・複製はご遠慮ください。
+  </p>
+
+  <div class="video-list">
+
+    <div class="video-item">
+      <div class="video-meta">
+        <div class="video-meta-l">
+          <div class="video-num">01 / 02</div>
+          <h2 class="video-title">allbirds<em>"Better things Better way"</em></h2>
+        </div>
+        <div class="video-meta-r">
+          Director / Ippei Sakanaka<br>
+          Commercial Film · 2025
+        </div>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/vJ_MWOhUo_k?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-item">
+      <div class="video-meta">
+        <div class="video-meta-l">
+          <div class="video-num">02 / 02</div>
+          <h2 class="video-title">TARO<em>「TEXTBOOK」</em></h2>
+        </div>
+        <div class="video-meta-r">
+          Director / Ippei Sakanaka<br>
+          Music Video · 2025
+        </div>
+      </div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/KiNMHu3ZNtc?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>© 2026 Ippei Sakanaka · Rolling & Make Magic.</span>
+    <a href="index.html" class="footer-back">← Back to portfolio</a>
+  </div>
+</div>
+
+<script>
+const c=document.getElementById('cursor');
+const r=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  c.style.left=mx+'px';c.style.top=my+'px';
+});
+function loop(){
+  rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;
+  r.style.left=rx+'px';r.style.top=ry+'px';
+  requestAnimationFrame(loop);
+}
+loop();
+document.querySelectorAll('a,button,input').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{c.classList.add('big');r.style.opacity='0';});
+  el.addEventListener('mouseleave',()=>{c.classList.remove('big');r.style.opacity='0.4';});
+});
+
+// Timecode
+let f=0;
+setInterval(()=>{
+  f++;
+  const fr=f%24,ts=Math.floor(f/24),s=ts%60,tm=Math.floor(ts/60),m=tm%60,h=Math.floor(tm/60);
+  const el=document.getElementById('tc');
+  if(el)el.textContent='TC '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+':'+String(fr).padStart(2,'0');
+},1000/24);
+
+const PW='eizohaeezo';
+
+// Check if already unlocked (session)
+if(sessionStorage.getItem('clientAccess')==='true'){
+  showContent();
+}
+
+function unlock(){
+  const v=document.getElementById('gateInput').value;
+  if(v===PW){
+    sessionStorage.setItem('clientAccess','true');
+    showContent();
+  } else {
+    document.getElementById('gateError').classList.add('show');
+    document.getElementById('gateInput').value='';
+  }
+}
+function showContent(){
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('content').classList.add('show');
+}
+document.getElementById('gateInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')unlock();
+});
+
+// Auto-focus
+setTimeout(()=>{
+  if(!sessionStorage.getItem('clientAccess')){
+    document.getElementById('gateInput').focus();
+  }
+},300);
+</script>
+</body>
+</html>
